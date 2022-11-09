@@ -31,16 +31,16 @@ enum ValveState{
   AttemptToClose = 5
 };
 
-struct RocketControl{
+struct DAQManager{
   HardwareManager hardware;
   TaskManager tasks;
-  DataFrame dataFrame;
+
   bool isConnectedFlags[CONNECTION_CHECK_DEVICE_NUMBER];
   uint8_t connectedStatus;
 
-  RecoverySTM recoveryStm = RecoverySTM(hardware.i2c1, RECOVERY_ADDRES);
-
-	RocketControl() = default;
+  DAQManager() = default;
+  ~DAQManager() = default;
+  
   void updateCurrentState();
   void sendLog(const char *message);
   uint32_t getDisconnectRemainingTime();
