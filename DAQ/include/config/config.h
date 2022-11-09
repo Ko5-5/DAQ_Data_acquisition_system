@@ -1,0 +1,13 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#define SD_FRAME_ARRAY_SIZE 1024
+
+// ## LORA ##
+#define LORA_FRAME_ARRAY_SIZE 256
+#define LORA_FREQUENCY_KHZ 867000
+#define LORA_PERIOD 500
+#define LORA_TX_DATA_PREFIX "DAQ;"
+#define LORA_TX_OPTIONS_PREFIX "DAQ;"
+
+#endif
