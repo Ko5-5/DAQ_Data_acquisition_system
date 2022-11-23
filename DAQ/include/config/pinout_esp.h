@@ -6,6 +6,7 @@
 
 // ## Voltage measurement ##
 #define VBAT_MES 36U
+#define VBAT_MES_CHANNEL ADC1_CHANNEL_0
 
 // ## TFT Touchscreen ##
 #define SCREEN_CS 25U
@@ -36,7 +37,7 @@
 #define SPI_MISO 19U
 #define SPI_CLK 18U
 // UART
-#define UART_RX 16U
-#define UART_TX 17U
+#define UART2_RX 16U
+#define UART2_TX 17U
 
 #endif

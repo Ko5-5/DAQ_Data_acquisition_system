@@ -3,6 +3,9 @@
 
 #define SD_FRAME_ARRAY_SIZE 1024
 
+// ## UART ##
+#define UART_2 2U
+
 // ## LORA ##
 #define LORA_FRAME_ARRAY_SIZE 256
 #define LORA_FREQUENCY_KHZ 867000

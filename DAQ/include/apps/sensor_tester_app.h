@@ -17,6 +17,8 @@ public:
     SensorTester();
     ~SensorTester();
 
+    static void SensorTesterApp(void);
+
     bool measure_i2c_sensors();
     bool measure_spi_sensors();
     bool measure_adc_reads();

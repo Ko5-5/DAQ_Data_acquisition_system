@@ -19,7 +19,7 @@ struct TaskManager {
   QueueHandle_t flashQueue;
   // mutexes
   SemaphoreHandle_t spiMutex;
-  SemaphoreHandle_t i2c1Mutex;
+  SemaphoreHandle_t i2cMutex;
 
   // spinlock
   portMUX_TYPE stateLock = portMUX_INITIALIZER_UNLOCKED;

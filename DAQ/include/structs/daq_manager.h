@@ -20,26 +20,16 @@
 #define FLASH_QUEUE_LENGTH 20
 #define ESP_NOW_QUEUE_LENGTH 5
 
-#define CONNECTION_CHECK_DEVICE_NUMBER 6
-
-enum ValveState{
-  Close = 0,
-  Open = 1,
-  IDK = 2 ,
-  Vent = 3,
-  AttemptToOpen = 4,
-  AttemptToClose = 5
-};
-
 struct DAQManager{
   HardwareManager hardware;
   TaskManager tasks;
 
-  bool isConnectedFlags[CONNECTION_CHECK_DEVICE_NUMBER];
-  uint8_t connectedStatus;
-
   DAQManager() = default;
   ~DAQManager() = default;
+
+  static void DAQApp(void);
+
+  // OBC old functions
   
   void updateCurrentState();
   void sendLog(const char *message);
