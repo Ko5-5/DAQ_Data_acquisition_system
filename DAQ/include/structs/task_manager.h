@@ -2,13 +2,17 @@
 #define TASK_MANAGER_H
 
 #include <Arduino.h>
+#include <LoRa.h>
+#include "SPIMemory.h"
+
+#include "config/pinout_esp.h"
 
 struct TaskManager {
-  /**RTOS**/
+  // ## FreeRTOS ##
   // tasks
   TaskHandle_t loraTask;
   TaskHandle_t rxHandlingTask;
-  TaskHandle_t stateTask;
+  // TaskHandle_t stateTask;
   TaskHandle_t dataTask;
   TaskHandle_t sdTask;
   TaskHandle_t flashTask;

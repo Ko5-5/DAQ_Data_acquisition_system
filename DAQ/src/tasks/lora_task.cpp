@@ -4,17 +4,17 @@ static struct {
   char loraRx[LORA_FRAME_ARRAY_SIZE / 2];
   char loraTx[LORA_FRAME_ARRAY_SIZE];
   bool data_to_send;
-}task = {
-  .loraRx = {0},
-  .loraTx = {0},
-  .data_to_send = false,
+} task = {
+    .loraRx = {0},
+    .loraTx = {0},
+    .data_to_send = false,
 };
 
 static bool lora_init(void) {
   LoRa.setSPI(rc.hardware.mySPI);
   LoRa.setPins(LORA_CS, LORA_RS, LORA_D0);
-  
-  if(LoRa.begin((int)OPT_get_lora_freq() * 1E3) == 0) {
+
+  if (LoRa.begin((int)OPT_get_lora_freq() * 1E3) == 0) {
     return false;
   }
 
@@ -54,18 +54,18 @@ static void lora_read_message_and_put_on_queue(void) {
   if (rx_size < LORA_FRAME_ARRAY_SIZE - 1) {
     memcpy(task.loraRx, rxStr.c_str(), rx_size);
     task.loraRx[rx_size] = '\0';
-    xQueueSend(rc.hardware.loraRxQueue, (void*)&task.loraRx, 0);
+    xQueueSend(rc.hardware.loraRxQueue, (void *)&task.loraRx, 0);
   }
 }
 
 static void lora_write_message(uint8_t *data, size_t size) {
-  if(LoRa.beginPacket() != 0) {
+  if (LoRa.beginPacket() != 0) {
     LoRa.write(data, size);
     LoRa.endPacket();
   }
 }
 
-void loraTask(void *arg){
+void loraTask(void *arg) {
   xSemaphoreTake(rc.hardware.spiMutex, pdTRUE);
 
   if (lora_init() == false) {
@@ -78,7 +78,7 @@ void loraTask(void *arg){
   vTaskDelay(100 / portTICK_PERIOD_MS);
   uint32_t time = xTaskGetTickCount();
 
-  while(1){
+  while (1) {
     if (xSemaphoreTake(rc.hardware.spiMutex, 50) == pdTRUE) {
       if (LoRa.parsePacket() != 0) {
         if (LoRa.available()) {
@@ -93,8 +93,8 @@ void loraTask(void *arg){
 
     if (xSemaphoreTake(rc.hardware.spiMutex, 50) == pdTRUE) {
       // Serial.println("Semaphore take lora send");
-      if(xQueueReceive(rc.hardware.loraTxQueue, (void*)&task.loraTx, 0) == pdTRUE){
-        lora_write_message((uint8_t*) task.loraTx, sizeof(task.loraTx));
+      if (xQueueReceive(rc.hardware.loraTxQueue, (void *)&task.loraTx, 0) == pdTRUE) {
+        lora_write_message((uint8_t *)task.loraTx, sizeof(task.loraTx));
         memset(task.loraTx, 0, sizeof(task.loraTx));
       }
       // Serial.println("Semaphore givelora send");

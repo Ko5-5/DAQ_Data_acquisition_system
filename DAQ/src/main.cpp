@@ -1,8 +1,10 @@
 #include <Arduino.h>
 
 void setup() {
-  // here is gonna be the setup for all the components of the project
-  // and then the start of program threads
+  // configure necessary hardware
+  // show the welcome page
+  // delay
+  // launch app choosing task
 }
 
 void loop() {
