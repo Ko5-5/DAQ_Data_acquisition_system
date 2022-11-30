@@ -2,10 +2,13 @@
 #define TASK_MANAGER_H
 
 #include <Arduino.h>
+#include <stdio.h>
 #include <LoRa.h>
 #include "SPIMemory.h"
 
 #include "config/pinout_esp.h"
+#include "config/config.h"
+#include "data_structs/pysd_data_structs.h"
 
 struct TaskManager {
   // ## FreeRTOS ##
@@ -35,7 +38,7 @@ struct TaskManager {
   TaskManager()
       : loraTask(NULL),
         rxHandlingTask(NULL),
-        stateTask(NULL),
+        //stateTask(NULL),
         dataTask(NULL),
         sdTask(NULL),
         flashTask(NULL),

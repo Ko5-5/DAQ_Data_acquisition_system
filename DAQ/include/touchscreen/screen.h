@@ -2,33 +2,34 @@
 #define SCREEN_H
 
 #include <Arduino.h>
+#include <SPI.h>
 
-#include "Adafruit_TFTLCD.h"
+#include "Adafruit_GFX.h"
+#include "Adafruit_HX8357.h"
 #include "Adafruit_TSC2007.h"
 
-#include "colors.h"
-
-class ScreenManager : public Adafruit_TFTLCD {
+class ScreenManager {
 private:
-  bool isChanged;
-  uint16_t identifier;
-  Adafruit_TSC2007 touchscreen;
+    bool isChanged;
+    Adafruit_HX8357 tft;
+    Adafruit_TSC2007 touch;
 
-  unsigned long testFillScreen();
-  unsigned long testText();
-  unsigned long testLines(uint16_t color);
+    unsigned long testFillScreen();
+    unsigned long testText();
+    unsigned long testLines(uint16_t color);
 
 public:
-  ScreenManager(uint8_t cs, uint8_t cd, uint8_t wr, uint8_t rd, uint8_t rst)
-      : Adafruit_TFTLCD(cs, cd, wr, rd, rst), isChanged(false) {}
+    ScreenManager(SPIClass *_spi, int8_t _cs, int8_t _dc, int8_t _rst);
 
-  void register_change() { isChanged = true; }
+    void register_change() { isChanged = true; }
 
-  bool init();
+    void init();
 
-  void welcome_screen();
+    void welcome_screen();
 
-  uint8_t app_sel_screen();
+    void logo_screen();
+
+    uint8_t app_sel_screen();
 };
 
 #endif

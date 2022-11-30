@@ -30,14 +30,14 @@
 
 // ## Communication interfaces ##
 // I2C
-#define I2C_SDA 21U
-#define I2C_SCL 22U
+#define ESP_I2C_SDA 21U
+#define ESP_I2C_SCL 22U
 // SPI
-#define SPI_MOSI 23U
-#define SPI_MISO 19U
-#define SPI_CLK 18U
+#define ESP_SPI_MOSI 23U
+#define ESP_SPI_MISO 19U
+#define ESP_SPI_CLK 18U
 // UART
-#define UART2_RX 16U
-#define UART2_TX 17U
+#define ESP_UART2_RX 16U
+#define ESP_UART2_TX 17U
 
 #endif

@@ -1,5 +1,5 @@
-#include "../include/structs/task_manager.h"
-
+#include "structs/task_manager.h"
+/*
 void flashTask(void *arg){
 
   File file;
@@ -40,3 +40,4 @@ void flashTask(void *arg){
     vTaskDelay(10 / portTICK_PERIOD_MS);
   }
 }
+*/

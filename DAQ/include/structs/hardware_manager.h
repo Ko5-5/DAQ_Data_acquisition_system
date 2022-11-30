@@ -10,24 +10,22 @@
 
 #include "config/pinout_esp.h"
 #include "config/config.h"
-#include "components/voltage_measure.h"
 
 struct HardwareManager {
 public:
   // Voltage measurement
-  Voltage_Measure_t myVoltage = VOLTAGE_MEASURE_INIT(VBAT_MES_CHANNEL);
+  // Voltage_Measure_t myVoltage = VOLTAGE_MEASURE_INIT(VBAT_MES_CHANNEL);
 
   // Communication interfaces
-  SPIClass mySPI;
-  TwoWire myI2C;
-  HardwareSerial mySerial(UART_2);
+  SPIClass mySPI = SPIClass(VSPI);
+  TwoWire myI2C = TwoWire(0);
+  HardwareSerial mySerial = HardwareSerial(EXT_UART);
 
   // Expanders
-  MCP23017 gpioExpander(myI2C, GPIO_EXP_ADDR);
-  ADS7828 adcExpander;
+  MCP23017 gpioExpander = MCP23017(&myI2C, GPIO_EXP_ADDR);
+  //ADS7828 adcExpander;
 
   // Contructor
-  HardwareManager() : mySPI(SPIClass(VSPI)), myI2C(TwoWire(0)) {}
 
   // Initialization methods
   bool hardware_init();

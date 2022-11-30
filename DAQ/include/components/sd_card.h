@@ -21,5 +21,3 @@ class SDCard{
 };
 
 #endif
-
-#endif

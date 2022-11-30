@@ -4,7 +4,7 @@
 #define SD_FRAME_ARRAY_SIZE 1024
 
 // ## UART ##
-#define UART_2 2U
+#define EXT_UART (uint)2
 
 // ## EXPANDERS ##
 #define GPIO_EXP_ADDR 0x20 // (A2/A1/A0 = LOW)

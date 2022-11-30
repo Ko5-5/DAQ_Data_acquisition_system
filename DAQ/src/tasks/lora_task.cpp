@@ -1,5 +1,5 @@
-#include "tasks.h"
-
+#include "structs/task_manager.h"
+/*
 static struct {
   char loraRx[LORA_FRAME_ARRAY_SIZE / 2];
   char loraTx[LORA_FRAME_ARRAY_SIZE];
@@ -105,3 +105,4 @@ void loraTask(void *arg) {
     vTaskDelay(100 / portTICK_PERIOD_MS);
   }
 }
+*/

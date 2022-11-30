@@ -1,5 +1,5 @@
-#include "../include/structs/task_manager.h"
-
+#include "structs/task_manager.h"
+/*
 static void write_header_to_sd(SDCard &sd, String path) {
   char buffer[2000];
   pysd_create_header(buffer, sizeof(buffer), true);
@@ -82,3 +82,4 @@ void sdTask(void *arg) {
     vTaskDelay(25 / portTICK_PERIOD_MS);
   }
 }
+*/
