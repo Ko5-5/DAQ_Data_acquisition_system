@@ -3,7 +3,28 @@
 ScreenManager::ScreenManager(SPIClass *_spi, int8_t _cs, int8_t _dc, int8_t _rst)
     : isChanged(false), tft(Adafruit_HX8357(_spi, _cs, _dc, _rst, HX8357D)) {}
 
-void ScreenManager::init() {
+ScreenManager::touchPoint ScreenManager::read_touch() {
+  touchPoint point;
+  touch.read_touch(&point.x, &point.y, &point.z1, &point.z2);
+  while (touch.read_touch(&point.x, &point.y, &point.z1, &point.z2)) {
+    if (point.z1 > 200) {
+      if (point.x > 40 && point.x < tft.width() - 80) {
+        if (point.y > 40 && point.y < 100) {
+          Serial.println("Sensors app");
+        }
+        if (point.y > 120 && point.y < 200) {
+          Serial.println("Static fire app");
+        }
+        if (point.y > 220 && point.y < 300) {
+          Serial.println("Launchpad app");
+        }
+      }
+    }
+  }
+  return point;
+}
+
+void ScreenManager::init(TwoWire *wire) {
   Serial.println("TFT screen start...");
 
   tft.begin();
@@ -41,7 +62,9 @@ void ScreenManager::init() {
   Serial.println(testLines(HX8357_CYAN));
   delay(500);
 
-  Serial.println(F("Done!"));
+  Serial.println(F("Screen => Done!"));
+
+  touch.begin(TSC2007_I2CADDR_DEFAULT, wire);
 }
 
 void ScreenManager::welcome_screen() {
@@ -72,17 +95,17 @@ void ScreenManager::logo_screen() {
 
 uint8_t ScreenManager::app_sel_screen() {
   tft.fillScreen(HX8357_BLACK);
-  tft.fillRoundRect(40, 20, tft.width()-80, 80, 20, HX8357_BLUE);\
+  tft.fillRoundRect(40, 20, tft.width() - 80, 80, 20, HX8357_BLUE);
   tft.setCursor(110, 45);
   tft.setTextSize(4);
   tft.setTextColor(HX8357_WHITE);
   tft.println("SENSOR TEST");
-  tft.fillRoundRect(40, 120, tft.width()-80, 80, 20, HX8357_BLUE);
+  tft.fillRoundRect(40, 120, tft.width() - 80, 80, 20, HX8357_BLUE);
   tft.setCursor(110, 145);
   tft.setTextSize(4);
   tft.setTextColor(HX8357_WHITE);
   tft.println("STATIC FIRE");
-  tft.fillRoundRect(40, 220, tft.width()-80, 80, 20, HX8357_BLUE);
+  tft.fillRoundRect(40, 220, tft.width() - 80, 80, 20, HX8357_BLUE);
   tft.setCursor(130, 245);
   tft.setTextSize(4);
   tft.setTextColor(HX8357_WHITE);
@@ -163,15 +186,19 @@ unsigned long ScreenManager::testText() {
         "down, so suddenly that Alice had not a moment to think about stopping herself before she "
         "found herself falling down a very deep well."));
 
-  tft.println(F(
-      "Either the well was very deep, or she fell very slowly, for she had plenty of time as she "
-      "went down to look about her and to wonder what was going to happen next. First, she tried "
-      "to look down and make out what she was coming to, but it was too dark to see anything; then "
-      "she looked at the sides of the well, and noticed that they were filled with cupboards and "
-      "book-shelves; here and there she saw maps and pictures hung upon pegs. She took down a jar "
-      "from one of the shelves as she passed; it was labelled 'ORANGE MARMALADE', but to her great "
-      "disappointment it was empty: she did not like to drop the jar for fear of killing somebody, "
-      "so managed to put it into one of the cupboards as she fell past it."));
+  tft.println(
+      F("Either the well was very deep, or she fell very slowly, for she had plenty of time as she "
+        "went down to look about her and to wonder what was going to happen next. First, she tried "
+        "to look down and make out what she was coming to, but it was too dark to see anything; "
+        "then "
+        "she looked at the sides of the well, and noticed that they were filled with cupboards and "
+        "book-shelves; here and there she saw maps and pictures hung upon pegs. She took down a "
+        "jar "
+        "from one of the shelves as she passed; it was labelled 'ORANGE MARMALADE', but to her "
+        "great "
+        "disappointment it was empty: she did not like to drop the jar for fear of killing "
+        "somebody, "
+        "so managed to put it into one of the cupboards as she fell past it."));
 
   return micros() - start;
 }
