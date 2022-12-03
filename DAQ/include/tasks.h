@@ -5,14 +5,15 @@
 
 #include "config/pinout_esp.h"
 #include "config/config.h"
-#include "config/data_structs.h"
+
+#include "structs/daq_manager.h"
 
 #include "components/sd_card.h"
 
-// Touchscreen
-void screen_refresher_task(void *arg);
-void screen_touch_task(void *arg);
-void screen_control_task(void *arg);
+extern TaskManager tasks;
+
+// Config
+void config_task(void* arg);
 
 // LORA
 void lora_task(void *arg);

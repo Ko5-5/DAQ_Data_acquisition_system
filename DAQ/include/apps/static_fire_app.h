@@ -1,15 +1,17 @@
 #ifndef STATIC_FIRE_APP_H
 #define STATIC_FIRE_APP_H
 
-#define STATIC_FIRE_APP_NUM 2
+#include "app.h"
 
-class StaticFire {
+class StaticFire : public App{
 private:
     bool isHam00wniaConnected;
 
 public:
-    StaticFire();
-    ~StaticFire();
+    StaticFire(){}
+    ~StaticFire(){}
 
-    static void StaticFireApp(void);
+    static void appTask(void* arg);
 };
+
+#endif

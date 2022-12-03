@@ -1,27 +1,22 @@
 #include "touchscreen/screen.h"
 
-ScreenManager::ScreenManager(SPIClass *_spi, int8_t _cs, int8_t _dc, int8_t _rst)
-    : isChanged(false), tft(Adafruit_HX8357(_spi, _cs, _dc, _rst, HX8357D)) {}
+ScreenManager *ScreenManager::pInstance{nullptr};
+std::mutex ScreenManager::pMutex;
 
-ScreenManager::touchPoint ScreenManager::read_touch() {
-  touchPoint point;
-  touch.read_touch(&point.x, &point.y, &point.z1, &point.z2);
-  while (touch.read_touch(&point.x, &point.y, &point.z1, &point.z2)) {
-    if (point.z1 > 200) {
-      if (point.x > 40 && point.x < tft.width() - 80) {
-        if (point.y > 40 && point.y < 100) {
-          Serial.println("Sensors app");
-        }
-        if (point.y > 120 && point.y < 200) {
-          Serial.println("Static fire app");
-        }
-        if (point.y > 220 && point.y < 300) {
-          Serial.println("Launchpad app");
-        }
-      }
-    }
+ScreenManager *ScreenManager::GetInstance() {
+  std::lock_guard<std::mutex> lock(pMutex);
+  if (pInstance == nullptr) {
+    HardwareManager *hardware = HardwareManager::GetInstance();
+    pInstance = new ScreenManager(&hardware->mySPI, SCREEN_CS, SCREEN_D_C, -1);
   }
-  return point;
+  return pInstance;
+}
+
+bool ScreenManager::read_touch(touchPoint *point) {
+  if (touch.read_touch(&point->x, &point->y, &point->z1, &point->z2))
+    return true;
+  else
+    return false;
 }
 
 void ScreenManager::init(TwoWire *wire) {
@@ -93,7 +88,7 @@ void ScreenManager::logo_screen() {
   tft.print("SPACE");
 }
 
-uint8_t ScreenManager::app_sel_screen() {
+void ScreenManager::app_sel_screen() {
   tft.fillScreen(HX8357_BLACK);
   tft.fillRoundRect(40, 20, tft.width() - 80, 80, 20, HX8357_BLUE);
   tft.setCursor(110, 45);
@@ -110,6 +105,31 @@ uint8_t ScreenManager::app_sel_screen() {
   tft.setTextSize(4);
   tft.setTextColor(HX8357_WHITE);
   tft.println("LAUNCHPAD");
+}
+
+void ScreenManager::app_logo_screen(AppName app) {
+  tft.fillScreen(HX8357_BLACK);
+  tft.setTextSize(8);
+  tft.setCursor(100, 80);
+  tft.setTextColor(HX8357_WHITE);
+  if (app == AppName::SENSOR_APP)
+    tft.println("SENSOR");
+  else if (app == AppName::STATIC_FIRE_APP)
+    tft.println("STATIC");
+  else if (app == AppName::LAUNCHPAD_APP) {
+    tft.setCursor(30, 80);
+    tft.println("LAUNCHPAD");
+  }
+  tft.setCursor(100, 180);
+  tft.setTextColor(HX8357_WHITE);
+  if (app == AppName::SENSOR_APP)
+    tft.print("TESTER");
+  else if (app == AppName::STATIC_FIRE_APP)
+    tft.println("FIRE");
+  else if (app == AppName::LAUNCHPAD_APP){
+    tft.setCursor(80, 180);
+    tft.println("CONTROL");
+  }
 }
 
 // ###

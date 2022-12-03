@@ -9,10 +9,14 @@
 #include "config/pinout_esp.h"
 #include "config/config.h"
 #include "data_structs/pysd_data_structs.h"
+#include "structs/hardware_manager.h"
+#include "touchscreen/screen.h"
 
 struct TaskManager {
   // ## FreeRTOS ##
   // tasks
+  TaskHandle_t configTask;
+  TaskHandle_t appTask;
   TaskHandle_t loraTask;
   TaskHandle_t rxHandlingTask;
   // TaskHandle_t stateTask;

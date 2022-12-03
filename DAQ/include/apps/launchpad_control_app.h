@@ -1,15 +1,17 @@
 #ifndef LAUNCHPAD_CONTROL_APP_H
 #define LAUNCHPAD_CONTROL_APP_H
 
-#define LAUNCHPAD_APP_NUM 3
+#include "app.h"
 
-class LaunchpadControl {
-private:
+class LaunchpadControl : public App {
+  private:
     bool isOBCConnected;
 
-public:
-    LaunchpadControl();
-    ~LaunchpadControl();
+  public:
+    LaunchpadControl(){}
+    ~LaunchpadControl(){}
 
-    static void LaunchpadControlApp(void);
+    static void appTask(void* arg);
 };
+
+#endif

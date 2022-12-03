@@ -1,5 +1,16 @@
 #include "structs/hardware_manager.h"
 
+HardwareManager* HardwareManager::pInstance{nullptr};
+std::mutex HardwareManager::pMutex;
+
+HardwareManager* HardwareManager::GetInstance() {
+  std::lock_guard<std::mutex> lock(pMutex);
+  if (pInstance == nullptr) {
+    pInstance = new HardwareManager();
+  }
+  return pInstance;
+}
+
 bool HardwareManager::hardware_init() {
   Serial.println(" --- I2C init --- ");
   myI2C.begin(ESP_I2C_SDA, ESP_I2C_SCL, 100E3);
