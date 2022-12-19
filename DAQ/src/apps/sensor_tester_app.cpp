@@ -2,16 +2,34 @@
 
 #include "touchscreen/screen.h"
 
-void SensorTester::appTask(void *arg){
-    ScreenManager* screen = ScreenManager::GetInstance();
+void SensorTester::appTask(void* arg) {
+  ScreenManager* screen = ScreenManager::GetInstance();
 
-    screen->app_logo_screen(AppName::SENSOR_APP);
+  screen->app_logo_screen(AppName::SENSOR_APP);
 
-    vTaskDelay(pdMS_TO_TICKS(1000));
+  vTaskDelay(pdMS_TO_TICKS(1000));
 
-    while(1){
-        Serial.println("Sensor tester app working");
-        vTaskDelay(pdMS_TO_TICKS(5000));
+  int graph[278] = {0};
+  int refresh_graph = 0;
+
+  for (int i = 0; i < MAX_X_GRAPH; i++) {
+    graph[i] = 250;
+  }
+
+  screen->tester_graph_screen("Sensor", graph);
+
+  while (1) {
+    Serial.println("Sensor tester app working");
+    refresh_graph++;
+
+    if (refresh_graph > 4) {
+      screen->tester_graph_screen("Sensor", graph);
+      refresh_graph = 0;
+      for (int i = 0; i < MAX_X_GRAPH; i++) {
+        graph[i] = 250 + 50 * sin(20 * i);
+      }
     }
-    vTaskDelete(NULL);
+    vTaskDelay(pdMS_TO_TICKS(500));
+  }
+  vTaskDelete(NULL);
 }

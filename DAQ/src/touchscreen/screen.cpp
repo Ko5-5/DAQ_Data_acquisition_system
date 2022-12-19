@@ -91,16 +91,19 @@ void ScreenManager::logo_screen() {
 void ScreenManager::app_sel_screen() {
   tft.fillScreen(HX8357_BLACK);
   tft.fillRoundRect(40, 20, tft.width() - 80, 80, 20, HX8357_BLUE);
+  tft.drawRoundRect(40, 20, tft.width() - 80, 80, 20, HX8357_WHITE);
   tft.setCursor(110, 45);
   tft.setTextSize(4);
   tft.setTextColor(HX8357_WHITE);
   tft.println("SENSOR TEST");
   tft.fillRoundRect(40, 120, tft.width() - 80, 80, 20, HX8357_BLUE);
+  tft.drawRoundRect(40, 120, tft.width() - 80, 80, 20, HX8357_WHITE);
   tft.setCursor(110, 145);
   tft.setTextSize(4);
   tft.setTextColor(HX8357_WHITE);
   tft.println("STATIC FIRE");
   tft.fillRoundRect(40, 220, tft.width() - 80, 80, 20, HX8357_BLUE);
+  tft.drawRoundRect(40, 220, tft.width() - 80, 80, 20, HX8357_WHITE);
   tft.setCursor(130, 245);
   tft.setTextSize(4);
   tft.setTextColor(HX8357_WHITE);
@@ -126,9 +129,37 @@ void ScreenManager::app_logo_screen(AppName app) {
     tft.print("TESTER");
   else if (app == AppName::STATIC_FIRE_APP)
     tft.println("FIRE");
-  else if (app == AppName::LAUNCHPAD_APP){
+  else if (app == AppName::LAUNCHPAD_APP) {
     tft.setCursor(80, 180);
     tft.println("CONTROL");
+  }
+}
+
+void ScreenManager::tester_graph_screen(std::string name, int *values) {
+  tft.fillScreen(HX8357_BLACK);
+  tft.setTextColor(HX8357_WHITE);
+  tft.setTextSize(2);
+  tft.setCursor(200, 4);
+  tft.println(name.c_str());
+  tft.setTextSize(1);
+  tft.setCursor(0, 30);
+  int max = 500;  // std::max_element(values.begin(), values.end());
+  tft.println(max, DEC);
+  tft.setCursor(0, 292);
+  int min = 0;  // std::min_element(values.begin(), values.end());
+  tft.println(min, DEC);
+  tft.setCursor(5, 160);
+  tft.println("Y");
+  tft.setCursor(240, 305);
+  tft.println("t");
+  tft.drawFastVLine(20, 20, 280, HX8357_WHITE);
+  tft.fillTriangle(20, 20, 23, 25, 17, 25, HX8357_WHITE);
+  tft.drawFastHLine(20, 300, 440, HX8357_WHITE);
+  tft.fillTriangle(460, 300, 455, 303, 455, 297, HX8357_WHITE);
+  int value = 0;
+  for(int i = 0; i<MAX_X_GRAPH; i++){
+    value  = 0 + ((500.0 - 0.0) / (278.0 - 0.0)) * (double)(values[i] - 0) - 278;
+    tft.drawPixel(i+21, value+20, HX8357_RED);
   }
 }
 

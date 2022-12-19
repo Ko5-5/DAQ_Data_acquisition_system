@@ -5,13 +5,13 @@
 #include <SPI.h>
 
 #include <mutex>
+#include <vector>
 
 #include "Adafruit_GFX.h"
 #include "Adafruit_HX8357.h"
 #include "Adafruit_TSC2007.h"
-
-#include "structs/hardware_manager.h"
 #include "apps/apps.h"
+#include "structs/hardware_manager.h"
 
 #define TOUCH_MAX 3800
 
@@ -62,6 +62,8 @@ class ScreenManager {
     void app_sel_screen();
 
     void app_logo_screen(AppName app);
+
+    void tester_graph_screen(std::string name, int *values);
 };
 
 #endif

@@ -41,8 +41,6 @@ struct HardwareManager {
     MCP23017 gpioExpander = MCP23017(&myI2C, GPIO_EXP_ADDR);
     // ADS7828 adcExpander;
 
-    // Contructor
-
     // Initialization methods
     bool hardware_init();
     bool uart_init();

@@ -16,11 +16,10 @@ struct TaskManager {
   // ## FreeRTOS ##
   // tasks
   TaskHandle_t configTask;
+  TaskHandle_t appConfigTask;
   TaskHandle_t appTask;
   TaskHandle_t loraTask;
   TaskHandle_t rxHandlingTask;
-  // TaskHandle_t stateTask;
-  TaskHandle_t dataTask;
   TaskHandle_t sdTask;
   TaskHandle_t flashTask;
   // queues
@@ -36,14 +35,15 @@ struct TaskManager {
   portMUX_TYPE stateLock = portMUX_INITIALIZER_UNLOCKED;
 
   // software timers
-  TimerHandle_t watchdogTimer;
+  TimerHandle_t heartbeatTimer;
   TimerHandle_t disconnectTimer;
 
   TaskManager()
-      : loraTask(NULL),
+      : configTask(NULL),
+        appConfigTask(NULL),
+        appTask(NULL),
+        loraTask(NULL),
         rxHandlingTask(NULL),
-        //stateTask(NULL),
-        dataTask(NULL),
         sdTask(NULL),
         flashTask(NULL),
         loraRxQueue(NULL),
@@ -51,7 +51,8 @@ struct TaskManager {
         sdQueue(NULL),
         flashQueue(NULL),
         spiMutex(NULL),
-        watchdogTimer(NULL),
+        i2cMutex(NULL),
+        heartbeatTimer(NULL),
         disconnectTimer(NULL) {}
 };
 
